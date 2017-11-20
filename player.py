@@ -8,9 +8,12 @@ class Player:
         elif game_state['bet_index'] == 1:
             bet = game_state['small_blind'] * 2
         else:
+            if self.is_pair_in_hand(game_state):
+                bet = game_state['current_buy_in']
+            else:
+                bet = 0
             # player_idx = game_state['in_action']
             # bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet']
-            bet = game_state['current_buy_in']
         return bet
 
     # 3 community cards
@@ -70,8 +73,7 @@ class Player:
             else:
                 modified_rank = card['rank']
 
-            modified_hand.append(modified_suit + modified_rank)
-        
+            modified_hand.append(modified_suit + modified_rank)     
         return modified_hand
 
     def showdown(self, game_state):
