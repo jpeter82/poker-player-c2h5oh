@@ -30,7 +30,7 @@ class Player:
         # bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet']
         bet = game_state['current_buy_in']
         return bet
-    
+
     def betRequest(self, game_state):
         bet = 0
         if len(game_state['community_cards']) == 0:
@@ -40,11 +40,39 @@ class Player:
         elif len(game_state['community_cards']) == 4:
             bet = self.third_round(game_state)
         elif len(game_state['community_cards']) == 5:
-            bet = self.fourth_round(game_state) 
+            bet = self.fourth_round(game_state)
+
+        # self.transform_hand(game_state)
+
         return bet
 
     def is_pair_in_hand(self, game_state):
-        return game_state['players']['in_action']['hole_cards'][0]['rank'] == game_state['players']['in_action']['hole_cards'][1]['rank']
+        player_idx = game_state['in_action']
+        return game_state['players'][player_idx]['hole_cards'][0]['rank'] == game_state['players'][player_idx]['hole_cards'][1]['rank']
+
+    def transform_hand(self, game_state):
+        modified_hand = []
+        player_idx = game_state['in_action']
+
+        for card in game_state['players'][player_idx]['hole_cards']:
+
+            if card['suit'] == 'clubs':
+                modified_suit = 'C'
+            elif card['suit'] == 'spades':
+                modified_suit = 'S'
+            elif card['suit'] == 'hearts':
+                modified_suit = 'H'
+            elif card['suit'] == 'diamonds':
+                modified_suit = 'D'
+
+            if card['rank'] == '10':
+                modified_rank = 'T'
+            else:
+                modified_rank = card['rank']
+
+            modified_hand.append(modified_suit + modified_rank)
+        
+        return modified_hand
 
     def showdown(self, game_state):
         pass
