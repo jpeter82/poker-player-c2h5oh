@@ -1,6 +1,6 @@
 
 class Player:
-    VERSION = "c2h5oh ver1"
+    VERSION = "c2h5oh ver2"
   
     # first bet round without communnity cards
     def first_round(self, game_state):
@@ -34,7 +34,9 @@ class Player:
             bet = self.third_round(game_state)
         elif len(game_state['community_cards']) == 5:
             bet = self.fourth_round(game_state) 
+
         return bet
+
 
     def showdown(self, game_state):
         pass
