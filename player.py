@@ -8,10 +8,28 @@ class Player:
         elif game_state['bet_index'] == 1:
             bet = game_state['small_blind'] * 2
         else:
+            cards = self.transform_hand(game_state)
+            card1 = cards[0]
+            card2 = cards[1]
+            player_idx = game_state['in_action']
+
             if self.is_pair_in_hand(game_state):
-                bet = game_state['current_buy_in']
+                # bet = game_state['current_buy_in']
+                if re.search('[AKQ]', card1):
+                    bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet'] + game_state['minimum_raise'] * 2
+                elif re.search('[JT9]', card1):
+                    bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet'] + game_state['minimum_raise']
+                elif re.search('[2-8]', card1):
+                    bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet']
+                else:
+                    bet = 0
             else:
-                bet = 0
+                if re.search('[AKQ]', card1) and re.search('[AKQ]', card2):
+                    bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet'] + game_state['minimum_raise'] * 2
+                elif (re.search('[A]', card1) and re.search('[KQJT]', card2)) or (re.search('[KQJT]', card1) and re.search('[A]', card2)):
+                    bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet']
+                else:
+                    bet = 0
             # player_idx = game_state['in_action']
             # bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet']
         return bet
