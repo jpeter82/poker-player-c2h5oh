@@ -10,11 +10,11 @@ class Player:
             elif game_state['bet_index'] == 1:
                 bet = game_state['small_blind'] * 2
             else:
-                # bet = game_state['current_buy_in']
-                bet = game_state['current_buy_in'] - game_state['players']['in_action']['bet']
+                bet = game_state['current_buy_in']
+                # bet = game_state['current_buy_in'] - game_state['players']['in_action']['bet']
         else:
-            # bet = game_state['current_buy_in']
-            bet = game_state['current_buy_in'] - game_state['players']['in_action']['bet']
+            bet = game_state['current_buy_in']
+            # bet = game_state['current_buy_in'] - game_state['players']['in_action']['bet']
         return bet
 
     def is_pair_in_hand(self, game_state):
