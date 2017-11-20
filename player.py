@@ -14,12 +14,8 @@ class Player:
             bet = game_state['small_blind'] * 2
             # print 'BET_INDEX_1:' + str(bet)
         else:
-            cards = self.transform_hand(game_state)
-            card1 = cards[0]
-            card2 = cards[1]
-            player_idx = game_state['in_action']
-
             if self.is_pair_in_hand(game_state):
+
                 # bet = game_state['current_buy_in']
                 if re.search('[AKQ]', card1):
                     bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet'] + game_state['minimum_raise'] * 2
