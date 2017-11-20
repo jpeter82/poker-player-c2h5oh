@@ -1,12 +1,18 @@
+
+import re
+
+
 class Player:
     VERSION = "c2h5oh ver2"
-  
+
     # first bet round without communnity cards
     def first_round(self, game_state):
         if game_state['bet_index'] == 0:
             bet = game_state['small_blind']
+            # print 'BET_INDEX_0:' + str(bet)
         elif game_state['bet_index'] == 1:
             bet = game_state['small_blind'] * 2
+            # print 'BET_INDEX_1:' + str(bet)
         else:
             cards = self.transform_hand(game_state)
             card1 = cards[0]
@@ -17,21 +23,28 @@ class Player:
                 # bet = game_state['current_buy_in']
                 if re.search('[AKQ]', card1):
                     bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet'] + game_state['minimum_raise'] * 2
+                    # print 'BET_PAIR_AKQ:' + str(bet)
                 elif re.search('[JT9]', card1):
                     bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet'] + game_state['minimum_raise']
+                    # print 'BET_PAIR_JT9:' + str(bet)
                 elif re.search('[2-8]', card1):
                     bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet']
+                    # print 'BET_PAIR_2-8:' + str(bet)
                 else:
                     bet = 0
             else:
                 if re.search('[AKQ]', card1) and re.search('[AKQ]', card2):
                     bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet'] + game_state['minimum_raise'] * 2
+                    # print 'BET_NOTPAIR_AKQ:' + str(bet)
                 elif (re.search('[A]', card1) and re.search('[KQJT]', card2)) or (re.search('[KQJT]', card1) and re.search('[A]', card2)):
                     bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet']
+                    # print 'BET_NOTPAIR_AKQ:' + str(bet)
                 else:
                     bet = 0
+                    # print 'BET_ELSE:' + str(bet)
             # player_idx = game_state['in_action']
             # bet = game_state['current_buy_in'] - game_state['players'][player_idx]['bet']
+        # print 'FINAL_BET:' + str(bet)
         return bet
 
     # 3 community cards
